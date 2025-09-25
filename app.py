@@ -8,23 +8,17 @@ import random
 app = Flask(__name__)
 
 # --- Lógica de la Inteligencia Artificial ---
+# --- Lógica de la Inteligencia Artificial ---
+# Corrección clave: Usa rutas absolutas para encontrar el archivo en el servidor
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_FILE_PATH = os.path.join(BASE_DIR, 'data', 'sales_data.csv')
+
 try:
-    df = pd.read_csv('data/sales_data.csv')
+    # Intenta leer el archivo usando la ruta absoluta
+    df = pd.read_csv(DATA_FILE_PATH)
     df['product_id'] = df['product_id'].astype('category')
 except FileNotFoundError:
-    print("El archivo sales_data.csv no se encontró. Asegúrate de que esté en la carpeta 'data/'.")
-    exit()
-
-features = ['tipo_producto_general', 'tipo_antojo', 'base', 'tipo_sabor', 'weather']
-X = pd.get_dummies(df[features])
-y = df['product_id']
-
-try:
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
-    model.fit(X, y)
-    print("Modelo de IA entrenado correctamente.")
-except Exception as e:
-    print(f"Error al entrenar el modelo: {e}. Revisa tus datos.")
+    print(f"Error Crítico: El archivo no se encontró en {DATA_FILE_PATH}")
     exit()
 
 # --- Funciones de Utilidad ---
