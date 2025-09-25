@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+<body>
+    <div class="background-animation"></div>
+    <div class="container">
+        <img src="{{ url_for('static', filename='images/publicidad_michoacana.png') }}" alt="Logo de La Michoacana" class="logo">
+        
+        <div id="welcome-screen">
+            <h1>¡BIENVENIDO!,¿Listo para tu experiencia gastronomica?</h1>
+            <p class="subtitle-text">Responde las preguntas para tu recomendacion del dia.</p>
+            <button id="start-button" class="option-button">Empezar ahora</button>
+        </div>
+
+        <div id="quiz-container" class="hidden">
+            <h1>¡La michoacana recomienda!</h1>
+            <div class="question-container">
+                <h3>¿Qué tipo de producto te gustaría? </h3>
+                <div class="options">
+                    <button class="option-button" data-question="tipo_producto_general" data-answer="Paleta">Paleta </button>
+                    <button class="option-button" data-question="tipo_producto_general" data-answer="Helado">Helado </button>
+                    <button class="option-button" data-question="tipo_producto_general" data-answer="Agua">Agua </button>
+                    <button class="option-button" data-question="tipo_producto_general" data-answer="Especialidad">Especialidad </button>
+                </div>
+            </div>
+
+            <div class="question-container hidden">
+                <h3>¿Con qué tipo de antojo te identificas hoy? </h3>
+                <div class="options">
+                    <button class="option-button" data-question="tipo_antojo" data-answer="dulce">Dulce </button>
+                    <button class="option-button" data-question="tipo_antojo" data-answer="acido">Ácido </button>
+                    <button class="option-button" data-question="tipo_antojo" data-answer="cremoso">Cremoso </button>
+                    <button class="option-button" data-question="tipo_antojo" data-answer="picante">Picante </button>
+                    <button class="option-button" data-question="tipo_antojo" data-answer="salado">Salado </button>
+                </div>
+            </div>
+            
+            <div class="question-container hidden">
+                <h3>¿Prefieres que sea a base de agua o de leche? </h3>
+                <div class="options">
+                    <button class="option-button" data-question="base" data-answer="agua">Agua </button>
+                    <button class="option-button" data-question="base" data-answer="leche">Leche </button>
+                </div>
+            </div>
+            
+            <div class="question-container hidden">
+                <h3>¿Te gustan los sabores originales o clásicos? </h3>
+                <div class="options">
+                    <button class="option-button" data-question="tipo_sabor" data-answer="original">Originales </button>
+                    <button class="option-button" data-question="tipo_sabor" data-answer="clasico">Clásicos </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>Generando tu recomendación...</p>
+        </div>
+
+        <div id="recommendation-result" class="hidden"></div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <body>
+    <audio id="background-audio" src="{{ url_for('static', filename='audio/musica_fondo.mp3') }}" autoplay loop></audio>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</body>
+</html>

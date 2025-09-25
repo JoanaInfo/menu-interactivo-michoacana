@@ -1,0 +1,218 @@
+
+body {
+    font-family: 'Playfair Display', serif;
+    /* Cambia de color a degradado radial */
+    background: radial-gradient(circle at center, #f596b7 0%, #ff3477 100%);
+    color: #010305;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+.background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url('../images/fondo_animado.gif');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.3;
+}
+
+.container {
+    width: 90%;
+    max-width: 550px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeInScale 0.8s ease-out;
+}
+
+.logo {
+    width: 400px;
+    margin-bottom: 10px;
+    border: 5px solid rgba(255, 0, 85, 0.2);
+    border-left-color: #ff4081;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes slidein {
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+h1 {
+    color: #ff4081; /* Rosa vibrante */
+    font-family: 'Impact', 'Luckiest Guy', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 2.8rem;
+    text-shadow: 3px 3px #f8bbd0;
+    animation: slidein 1s ease-in-out; /* Agregado para la animación */
+}
+.question-container {
+    margin-bottom: 25px;
+    transition: opacity 0.5s ease;
+}
+
+h3 {
+    color: #000000; /* Negro */
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+}
+
+/* --- Estilos de los botones --- */
+
+.options {
+    display: grid; /* Usamos grid para las columnas */
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas de igual tamaño */
+    gap: 20px; /* Espacio entre los botones */
+    margin-top: 20px;
+}
+
+/* Estilos para el botón de empezar y el de regresar (centrados) */
+#welcome-screen #start-button, #recommendation-result #restart-button {
+    display: inline-block; /* Permite que el botón se centre */
+    width: auto; /* El ancho se ajusta al contenido */
+    max-width: 300px;
+    padding: 18px 40px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(45deg, #ff4081, #02f8f8);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.option-button {
+    width: 100%; /* Ocupa el ancho de la columna en el grid */
+    padding: 18px;
+    font-size: 1.8em;
+    font-family: 'Poppins';
+    font-style: italic;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(45deg, #ff4081, #08e2ff);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.option-button:hover, #start-button:hover, #restart-button:hover {
+    background: linear-gradient(45deg, #1ae4fe, #ff4081);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para el encabezado de la recomendación */
+.recommendation-header {
+    background: linear-gradient(90deg, #ff80ab, #ffccbc); /* Degradado de rosa a durazno */
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeInScale 0.6s ease-out; /* Animación de entrada */
+}
+
+.recommendation-header h2 {
+    font-family: 'Impact', sans-serif; 
+    color: #fff9f9; /* Texto blanco para contraste */
+    font-size: 2.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 4px 4px #f50072; /* Sombra rosa para darle profundidad */
+    margin-bottom: 5px;
+}
+
+.recommendation-header .weather-info {
+    font-family: 'Playfair Display', serif; /* Fuente elegante y cursiva */
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #ffe0b2; /* Un color más claro para el clima */
+    text-shadow: 1px 1px #078ae8; /* Sombra para el texto del clima */
+}
+.recommendation-card {
+    border: 3px solid #ff4081;
+    background-color: #ffc0db;
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.recommendation-card:hover {
+    transform: translateY(-5px);
+}
+
+.recommendation-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.spinner {
+    border: 5px solid rgba(255, 64, 129, 0.2);
+    border-left-color: #ff4081;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
