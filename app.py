@@ -1,30 +1,35 @@
 from flask import Flask, render_template, request, jsonify
-import joblib # Usamos joblib para cargar el modelo pre-entrenado
+import joblib 
 import requests
 import os
 import random
-import pandas as pd # Se mantiene solo para la estructura de DataFrame en la predicción
+import pandas as pd
 
 app = Flask(__name__)
 
 # --- Lógica de la Inteligencia Artificial (Carga del Modelo) ---
-# ESTO ES LO QUE CARGA LA IA: el archivo .pkl
+# ESTE BLOQUE CARGA EL CEREBRO DE LA IA.
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_FILE_PATH = os.path.join(BASE_DIR, 'modelo_ia.pkl')
+MODEL_COLUMNS_PATH = os.path.join(BASE_DIR, 'model_columns.pkl')
 
 try:
     # 1. Cargar el modelo pre-entrenado
     model = joblib.load(MODEL_FILE_PATH)
-    MODEL_COLUMNS = list(model.feature_names_in_)
+    # 2. Cargar las columnas para la predicción
+    MODEL_COLUMNS = joblib.load(MODEL_COLUMNS_PATH)
     print("Modelo de IA cargado y listo para predicciones.")
 except (FileNotFoundError, AttributeError):
-    print(f"Error Crítico: El archivo del modelo no se encontró. Asegúrate de que 'modelo_ia.pkl' exista y esté subido.")
+    print(f"Error Crítico: No se pudo cargar el modelo de IA. Asegúrate de que los archivos '.pkl' existan y esten subidos.")
     exit()
 
+# Las características originales (sin one-hot encoding)
 features = ['tipo_producto_general', 'tipo_antojo', 'base', 'tipo_sabor', 'weather']
 
-# --- Funciones de Utilidad (para el clima) ---
+
+# --- Funciones de Utilidad ---
 def get_weather_data(api_key, city):
+    # Función para obtener el clima actual (se conecta a una API externa)
     base_url = "http://api.openweathermap.org/data/2.5/weather"
     params = {'q': city, 'appid': api_key, 'units': 'metric'}
     try:
@@ -46,6 +51,7 @@ def get_weather_data(api_key, city):
         print(f"Error de conexión a la API del clima: {e}")
     return 'soleado'
 
+# --- Base de Datos de Productos (Completa y Corregida para Despliegue) ---
 PRODUCTS_DB = {
     'Paleta de Mango': {'name': 'Paleta de Mango', 'price': '$25', 'image': 'paleta_mango.png', 'justification': 'Un sabor tropical y dulce que no te puedes perder.', 'category': 'Paleta'},
     'Paleta de Limon': {'name': 'Paleta de Limón', 'price': '$20', 'image': 'paleta_limon.png', 'justification': 'Refrescante y ácida, la mejor opción para un día caluroso.', 'category': 'Paleta'},
@@ -130,25 +136,70 @@ PRODUCTS_DB = {
 # --- Rutas de Flask ---
 @app.route('/')
 def root_redirect():
-    # Redirige el tráfico de la página principal a la página del cuestionario
     from flask import redirect, url_for
     return redirect(url_for('questionnaire'))
 
 @app.route('/questionnaire')
 def questionnaire():
     return render_template('questionnaire.html')
-# (El resto de tus rutas deben ir debajo de esto)
+
 @app.route('/recommend', methods=['POST'])
 def recommend():
     try:
-        # ... (Lógica de predicción que depende del modelo)
-        # ...
-        return jsonify({
-            'recommended_product': recommended_product,
-            'weather': current_weather
-        })
+        import pandas as pd
+        
+        client_data = request.json
+        client_responses = {
+            'tipo_producto_general': client_data.get('tipo_producto_general'),
+            'tipo_antojo': client_data.get('tipo_antojo'),
+            'base': client_data.get('base'),
+            'tipo_sabor': client_data.get('tipo_sabor')
+        }
+
+        if not all(client_responses.values()):
+            return jsonify({'error': 'Faltan respuestas necesarias del cuestionario'}), 400
+
+        api_key = os.environ.get('WEATHER_API_KEY', 'cee0d3d67f8dfd9ff7e84d1f849c884e')
+        city = 'Mexico City'
+        current_weather = get_weather_data(api_key, city)
+        
+        # Corrección: El modelo espera una estructura de datos completa. Debemos cargar todas las columnas.
+        input_data = pd.DataFrame([client_responses], columns=features)
+        input_data['weather'] = current_weather
+        
+        input_data_encoded = pd.get_dummies(input_data)
+        
+        # CRUCIAL: Alinear las columnas con las que el modelo fue entrenado
+        # Esta es la causa principal del error.
+        # Le decimos a Pandas que cree las columnas que faltan y las llene con 0.
+        input_data_encoded = input_data_encoded.reindex(columns=model.feature_names_in_, fill_value=0)
+        
+        recommended_product_id = model.predict(input_data_encoded)[0]
+
+        chosen_product_type = client_responses['tipo_producto_general']
+        predicted_product_category = PRODUCTS_DB.get(recommended_product_id, {}).get('category', '')
+        
+        # Lógica de corrección de coherencia
+        if chosen_product_type.lower() not in predicted_product_category.lower():
+            coherent_products = [
+                p_id for p_id, p_info in PRODUCTS_DB.items()
+                if chosen_product_type.lower() in p_info['category'].lower()
+            ]
+            if coherent_products:
+                recommended_product_id = random.choice(coherent_products)
+
+        recommended_product = PRODUCTS_DB.get(recommended_product_id)
+
+        if recommended_product:
+            return jsonify({
+                'recommended_product': recommended_product,
+                'weather': current_weather
+            })
+        else:
+            return jsonify({'error': 'Product not found in database'}), 404
+
     except Exception as e:
-        return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
