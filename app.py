@@ -128,69 +128,27 @@ PRODUCTS_DB = {
 }
 
 # --- Rutas de Flask ---
+@app.route('/')
+def root_redirect():
+    # Redirige el tráfico de la página principal a la página del cuestionario
+    from flask import redirect, url_for
+    return redirect(url_for('questionnaire'))
+
+@app.route('/questionnaire')
+def questionnaire():
+    return render_template('questionnaire.html')
+# (El resto de tus rutas deben ir debajo de esto)
 @app.route('/recommend', methods=['POST'])
 def recommend():
-    # Inicialización de variables para evitar el error de Pylance
-    recommended_product = None
-    current_weather = 'soleado' # Inicializar con valor por defecto
-
     try:
-        # Importamos pandas aquí dentro del try para un manejo de errores más limpio
-        import pandas as pd
-        
-        client_data = request.json
-        client_responses = {
-            'tipo_producto_general': client_data.get('tipo_producto_general'),
-            'tipo_antojo': client_data.get('tipo_antojo'),
-            'base': client_data.get('base'),
-            'tipo_sabor': client_data.get('tipo_sabor')
-        }
-
-        if not all(client_responses.values()):
-            return jsonify({'error': 'Faltan respuestas necesarias del cuestionario'}), 400
-
-        # Obtener datos del clima
-        api_key = os.environ.get('WEATHER_API_KEY', 'cee0d3d67f8dfd9ff7e84d1f849c884e')
-        city = 'Mexico City'
-        current_weather = get_weather_data(api_key, city)
-        
-        # Preparar los datos de entrada para la predicción
-        input_data = pd.DataFrame([client_responses], columns=features)
-        input_data['weather'] = current_weather
-        
-        input_data_encoded = pd.get_dummies(input_data)
-        input_data_encoded = input_data_encoded.reindex(columns=MODEL_COLUMNS, fill_value=0)
-        
-        # Predicción
-        recommended_product_id = model.predict(input_data_encoded)[0]
-
-        chosen_product_type = client_responses['tipo_producto_general']
-        predicted_product_category = PRODUCTS_DB.get(recommended_product_id, {}).get('category', '')
-        
-        # Lógica de corrección de coherencia
-        if chosen_product_type.lower() not in predicted_product_category.lower():
-            coherent_products = [
-                p_id for p_id, p_info in PRODUCTS_DB.items()
-                if chosen_product_type.lower() in p_info['category'].lower()
-            ]
-            if coherent_products:
-                recommended_product_id = random.choice(coherent_products)
-
-        recommended_product = PRODUCTS_DB.get(recommended_product_id)
-
-        # Retorno de la respuesta final
-        if recommended_product:
-            return jsonify({
-                'recommended_product': recommended_product,
-                'weather': current_weather
-            }), 200
-        else:
-            return jsonify({'error': 'Product not found in database'}), 404
-
-    except Exception as e:
-        # Este bloque maneja errores de predicción o de carga (si algo salió mal)
-        # Aquí puedes devolver las variables que sí estaban inicializadas
+        # ... (Lógica de predicción que depende del modelo)
+        # ...
         return jsonify({
-            'error': f'Error en la predicción: {str(e)}',
-            'weather': current_weather # Devuelve el clima aunque sea por defecto
-        }), 500
+            'recommended_product': recommended_product,
+            'weather': current_weather
+        })
+    except Exception as e:
+        return jsonify({'error': f'Error en la predicción: {str(e)}'}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
