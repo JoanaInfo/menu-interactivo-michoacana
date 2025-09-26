@@ -6,14 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingDiv = document.getElementById('loading');
     const resultDiv = document.getElementById('recommendation-result');
 
+    // --- Variables de control ---
     let currentQuestionIndex = 0;
     const userResponses = {};
+    
+    // Si tienes audio, obtén el elemento (Asumo que el id es 'background-audio')
+    const backgroundAudio = document.getElementById('background-audio');
 
+    // Función que inicia el cuestionario
     const startQuiz = () => {
+        // ... (Tu lógica de inicio aquí)
         welcomeScreen.classList.add('hidden');
         quizContainer.classList.remove('hidden');
         currentQuestionIndex = 0;
-        // Limpiar respuestas anteriores para un nuevo intento
         for (const key in userResponses) {
             delete userResponses[key];
         }
@@ -24,16 +29,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.classList.add('hidden');
             }
         });
+        if (backgroundAudio) {
+            backgroundAudio.play().catch(e => console.log("Audio play blocked:", e));
+        }
     };
 
     const resetQuiz = () => {
         resultDiv.classList.add('hidden');
         quizContainer.classList.add('hidden');
         welcomeScreen.classList.remove('hidden');
+        if (backgroundAudio) {
+            backgroundAudio.pause();
+            backgroundAudio.currentTime = 0;
+        }
     };
     
     startButton.addEventListener('click', startQuiz);
 
+    // Lógica para avanzar en las preguntas
     const allOptionButtons = document.querySelectorAll('.option-button');
     allOptionButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -55,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- FUNCIÓN CRÍTICA: ENVÍA Y RECIBE LA RECOMENDACIÓN ---
     const sendDataToBackend = async () => {
         quizContainer.classList.add('hidden');
         loadingDiv.classList.remove('hidden');
@@ -67,55 +81,69 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/recommend', {
+            const response = await fetch('https://menu-interactivo-michoacana.onrender.com/recommend', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formattedResponses),
             });
-
+            
+            // Si el servidor responde con un código de error (4xx o 5xx)
             if (!response.ok) {
                 const errorData = await response.json();
-                displayError(errorData.error || 'Error desconocido.');
+                displayError(`Error ${response.status}: ${errorData.error || 'Fallo de la predicción.'}`);
                 return;
             }
 
+            // Si es exitoso (código 200)
             const data = await response.json();
-            // ¡La corrección clave está aquí! Ahora pasamos el objeto correcto a la función
             displayRecommendation(data.recommended_product, data.weather);
 
         } catch (error) {
-            console.error('Error:', error);
-            displayError('Ocurrió un error en la conexión. Inténtalo de nuevo.');
+            // Este bloque captura errores de red (Ej. servidor caído, timeout)
+            displayError('Error de Conexión: No se pudo contactar al servidor. Reintenta.');
+            console.error('Network Error:', error);
         } finally {
             loadingDiv.classList.add('hidden');
         }
     };
 
-const displayRecommendation = (product, weather) => {
-    const weatherEmojis = {
-        'soleado': '☀️',
-        'nublado': '☁️',
-        'lluvioso': '🌧️'
-    };
-    const weatherEmoji = weatherEmojis[weather] || '';
+    // --- FUNCIONES DE DISPLAY ---
+    const displayRecommendation = (product, weather) => {
+        const weatherEmojis = {
+            'soleado': '☀️',
+            'nublado': '☁️',
+            'lluvioso': '🌧️'
+        };
+        const weatherEmoji = weatherEmojis[weather] || '';
 
-    resultDiv.innerHTML = `
-        <div class="recommendation-header">
-            <h2>¡Tu recomendacion del dia es!</h2>
-            <p class="weather-info">El clima es ${weather} ${weatherEmoji}</p>
-        </div>
-        <div class="recommendation-card">
-            <h3>${product.name}</h3>
-            <p>Precio: ${product.price}</p>
-            <img src="/static/images/${product.image}" alt="${product.name}" class="product-image">
-            <p class="justification">${product.justification}</p>
-        </div>
-        <button id="restart-button" class="option-button">Regresar</button>
-    `;
-    resultDiv.classList.remove('hidden');
-    
-    document.getElementById('restart-button').addEventListener('click', resetQuiz);
-};
+        resultDiv.innerHTML = `
+            <div class="recommendation-header">
+                <h2 class="recommendation-title">¡Tu recomendación del día es!</h2>
+                <p class="weather-info">El clima es ${weather} ${weatherEmoji}</p>
+            </div>
+            <div class="recommendation-card">
+                <h3 class="product-name">${product.name}</h3>
+                <p class="product-price">Precio: ${product.price}</p>
+                <img src="/static/images/${product.image}" alt="${product.name}" class="product-image">
+                <p class="product-justification">${product.justification}</p>
+            </div>
+            <button id="restart-button" class="option-button">Regresar</button>
+        `;
+        resultDiv.classList.remove('hidden');
+        
+        document.getElementById('restart-button').addEventListener('click', resetQuiz);
+    };
+
+    const displayError = (message) => {
+        // Aseguramos que el contenedor de resultados se muestre para que el usuario vea el error
+        resultDiv.innerHTML = `
+            <h2 style="color: red;">¡UPS! </h2>
+            <p>${message}</p>
+            <button id="restart-button" class="option-button">Regresar</button>
+        `;
+        resultDiv.classList.remove('hidden');
+        document.getElementById('restart-button').addEventListener('click', resetQuiz);
+    };
 });
