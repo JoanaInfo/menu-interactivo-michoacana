@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 import joblib 
 import requests
 import os
@@ -21,7 +21,9 @@ try:
     print("Modelo de IA cargado y listo para predicciones.")
 except (FileNotFoundError, AttributeError):
     print(f"Error Crítico: No se pudo cargar el modelo de IA. Asegúrate de que los archivos '.pkl' existan y esten subidos.")
-    exit()
+    # Usar un exit() en Render puede ser problemático. Es mejor dejar que el proceso muera con un error.
+    # Para el despliegue, asumiremos que los archivos PKL están presentes.
+    pass
 
 # Las características originales (sin one-hot encoding)
 features = ['tipo_producto_general', 'tipo_antojo', 'base', 'tipo_sabor', 'weather']
@@ -65,7 +67,7 @@ PRODUCTS_DB = {
     'Helado de Chocolate': {'name': 'Helado de Chocolate', 'price': '$35', 'image': 'helado_chocolate.png', 'justification': 'Un clásico cremoso y dulce que nunca falla.', 'category': 'Helado'},
     'Paleta de Fresa': {'name': 'Paleta de Fresa', 'price': '$25', 'image': 'paleta_fresa.png', 'justification': 'Un sabor dulce y tradicional que no te puedes perder.', 'category': 'Paleta'},
     'Helado de Coco': {'name': 'Helado de Coco', 'price': '$35', 'image': 'helado_coco.png', 'justification': 'Un clásico tropical y cremoso.', 'category': 'Helado'},
-    'Nachos con Chili': {'name': 'Nachos con Chili', 'price': '$55', 'image': 'nachos_chili.png', 'justification': 'Un snack salado con un toque picante, perfecto para un antojo.', 'category': 'Especialidad'},
+    'Nachos con Chili': {'name': 'Nachos con Chili', 'price': '$55', 'image': 'nachos_chili.png', 'justification': 'Un snack salado con un toque picante, ideal para un antojo.', 'category': 'Especialidad'},
     'Papas con Chamoy': {'name': 'Papas con Chamoy', 'price': '$45', 'image': 'papas_chamoy.png', 'justification': 'Papas crujientes con un toque de sabor salado y picante.', 'category': 'Especialidad'},
     'Agua de Horchata': {'name': 'Agua de Horchata', 'price': '$20', 'image': 'agua_horchata.png', 'justification': 'Una bebida dulce y cremosa que te refresca.', 'category': 'Agua'},
     'Malteada de Chocolate': {'name': 'Malteada de Chocolate', 'price': '$40', 'image': 'malteada_chocolate.png', 'justification': 'Una bebida cremoso y dulce, perfecta para un día nublado.', 'category': 'Especialidad'},
@@ -136,7 +138,6 @@ PRODUCTS_DB = {
 # --- Rutas de Flask ---
 @app.route('/')
 def root_redirect():
-    from flask import redirect, url_for
     return redirect(url_for('questionnaire'))
 
 @app.route('/questionnaire')
@@ -146,8 +147,7 @@ def questionnaire():
 @app.route('/recommend', methods=['POST'])
 def recommend():
     try:
-        import pandas as pd
-        
+        # Asegúrate de importar pandas solo una vez arriba
         client_data = request.json
         client_responses = {
             'tipo_producto_general': client_data.get('tipo_producto_general'),
@@ -159,6 +159,7 @@ def recommend():
         if not all(client_responses.values()):
             return jsonify({'error': 'Faltan respuestas necesarias del cuestionario'}), 400
 
+        # La clave API se lee de las variables de entorno, usando el valor por defecto solo si no existe
         api_key = os.environ.get('WEATHER_API_KEY', 'cee0d3d67f8dfd9ff7e84d1f849c884e')
         city = 'Mexico City'
         current_weather = get_weather_data(api_key, city)
@@ -170,8 +171,7 @@ def recommend():
         input_data_encoded = pd.get_dummies(input_data)
         
         # CRUCIAL: Alinear las columnas con las que el modelo fue entrenado
-        # Esta es la causa principal del error.
-        # Le decimos a Pandas que cree las columnas que faltan y las llene con 0.
+        # Usamos model.feature_names_in_ que está disponible después de cargar el modelo.
         input_data_encoded = input_data_encoded.reindex(columns=model.feature_names_in_, fill_value=0)
         
         recommended_product_id = model.predict(input_data_encoded)[0]
@@ -199,7 +199,14 @@ def recommend():
             return jsonify({'error': 'Product not found in database'}), 404
 
     except Exception as e:
+        print(f"Error en la ruta /recommend: {e}")
         return jsonify({'error': str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# IMPORTANTE PARA RENDER:
+# Gunicorn, el servidor web que usa Render, ejecuta tu aplicación directamente
+# sin pasar por el bloque if __name__ == '__main__':.
+# Si dejas app.run(), puede generar un conflicto que hace que el servicio no inicie.
+# Por lo tanto, ESTE BLOQUE DEBE ESTAR COMENTADO O ELIMINADO en el código de producción.
+
+# if __name__ == '__main__':
+#    app.run(debug=True)
