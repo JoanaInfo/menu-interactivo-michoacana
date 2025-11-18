@@ -1,100 +1,36 @@
 tipo_producto_general,tipo_antojo,base,tipo_sabor,weather,product_id
-Paleta,dulce,agua,clasico,soleado,Paleta de Mango
-Paleta,acido,agua,clasico,soleado,Paleta de Limon
-Helado,cremoso,leche,clasico,nublado,Helado de Vainilla
-Especialidad,picante,agua,original,soleado,Nachos con Queso
-Especialidad,salado,agua,original,soleado,Papas Preparadas
-Especialidad,dulce,leche,original,soleado,Fresas con Crema
-Agua,dulce,agua,clasico,lluvioso,Agua de Jamaica
-Agua,acido,agua,clasico,soleado,Agua de Tamarindo
-Especialidad,picante,agua,original,soleado,Chamoyada de Mango
-Helado,cremoso,leche,clasico,nublado,Helado de Chocolate
-Paleta,dulce,agua,clasico,nublado,Paleta de Fresa
-Helado,cremoso,leche,clasico,soleado,Helado de Coco
-Especialidad,salado,agua,original,lluvioso,Nachos con Chili
-Especialidad,picante,agua,original,lluvioso,Papas con Chamoy
-Agua,dulce,agua,clasico,soleado,Agua de Horchata
-Especialidad,cremoso,leche,clasico,nublado,Malteada de Chocolate
-Helado,dulce,agua,original,nublado,Nieve de Piña
-Especialidad,salado,agua,original,soleado,Nachos con Frijoles
-Especialidad,dulce,leche,clasico,lluvioso,Copa de Helado de Vainilla
-Especialidad,cremoso,leche,original,soleado,Malteada de Fresa
-Agua,acido,agua,clasico,lluvioso,Agua de Limón
-Agua,dulce,agua,clasico,nublado,Agua de Piña
-Especialidad,cremoso,leche,original,soleado,Copa de Helado de Chocolate
-Especialidad,picante,agua,original,lluvioso,Papas con Valentina
-Especialidad,salado,leche,original,nublado,Torta Cubana
-Agua,dulce,agua,clasico,soleado,Agua de Mango
-Helado,cremoso,leche,clasico,soleado,Helado de Fresa
-Paleta,acido,agua,original,soleado,Paleta de Mora
-Especialidad,dulce,leche,original,lluvioso,Chocobana
-Especialidad,cremoso,leche,original,soleado,Malteada de Vainilla
-Especialidad,salado,agua,original,lluvioso,Nachos Mixtos
-Paleta,dulce,agua,original,nublado,Paleta de Piña Colada
-Especialidad,cremoso,leche,original,nublado,Copa de Helado de Coco
-Especialidad,picante,agua,original,soleado,Esquites
-Especialidad,dulce,leche,original,lluvioso,Fresas con Crema
-Especialidad,cremoso,leche,original,soleado,Frappe de Oreo
-Agua,dulce,agua,clasico,nublado,Agua de Sandia
-Especialidad,salado,agua,original,soleado,Tostilocos
-Especialidad,picante,agua,original,soleado,Coctel de Frutas con Chile
-Helado,dulce,agua,original,lluvioso,Nieve de Mango
-Agua,acido,agua,clasico,soleado,Agua de Limon
-Paleta,cremoso,leche,original,nublado,Paleta de Nuez
-Agua,dulce,agua,clasico,soleado,Agua de Fresa
-Especialidad,picante,agua,original,lluvioso,Papas con Salsas
-Especialidad,salado,agua,original,soleado,Nachos Jalapeños
-Especialidad,dulce,leche,original,nublado,Duraznos con Crema
-Especialidad,cremoso,leche,clasico,lluvioso,Rompope
-Paleta,acido,agua,clasico,nublado,Paleta de Tamarindo
-Agua,dulce,agua,clasico,soleado,Agua de Melon
-Helado,cremoso,leche,original,nublado,Helado de Oreo
-Especialidad,picante,agua,original,soleado,Nachos con Carne
-Agua,dulce,agua,clasico,lluvioso,Agua de Frambuesa
-Paleta,cremoso,leche,original,soleado,Paleta de Queso
-Paleta,dulce,agua,original,soleado,Paleta de Mango con Chile
-Agua,acido,agua,original,nublado,Agua de Maracuyá
-Especialidad,cremoso,leche,original,soleado,Malteada de Vainilla y Fresa
-Especialidad,picante,agua,original,lluvioso,Esquites con Hueso
-Especialidad,salado,agua,original,nublado,Nachos con Guacamole
-Especialidad,dulce,leche,original,nublado,Fresas con Crema y Chocolate
-Especialidad,acido,agua,original,soleado,Coctel de Toronja
-Helado,cremoso,leche,original,lluvioso,Helado de Cafe
-Agua,picante,agua,original,lluvioso,Agua de Tamarindo con Chile
-Especialidad,salado,agua,original,soleado,Papas Fritas con Limon
-Paleta,dulce,leche,original,soleado,Paleta de Coco con Leche
-Especialidad,cremoso,leche,original,nublado,Frappe de Galleta
-Paleta,acido,agua,original,lluvioso,Paleta de Zarzamora
-Especialidad,dulce,leche,original,nublado,Chocobana con Nuez
-Helado,cremoso,leche,original,soleado,Helado de Menta con Chispas
-Especialidad,picante,agua,original,lluvioso,Nachos con Jalapeños
-Especialidad,salado,agua,original,nublado,Papas a la Diabla
-Agua,dulce,agua,original,soleado,Agua de Guanabana
-Paleta,acido,agua,original,lluvioso,Paleta de Mandarina
-Especialidad,cremoso,leche,original,soleado,Malteada de Coco
-Especialidad,picante,leche,original,lluvioso,Atole de Vainilla
-Especialidad,salado,leche,original,nublado,Tacos de Guisado
-Especialidad,dulce,leche,original,lluvioso,Crepas con Cajeta y Nuez
-Especialidad,cremoso,leche,original,soleado,Frappe de Vainilla
-Agua,acido,agua,original,soleado,Agua de Naranja
-Especialidad,dulce,leche,original,nublado,Duraznos con Crema y Leche Condensada
-Paleta,dulce,leche,clasico,soleado,Paleta de Cajeta
-Paleta,dulce,agua,original,soleado,Paleta de Tamarindo
-Helado,cremoso,leche,clasico,nublado,Helado de Coco
-Helado,cremoso,leche,original,soleado,Helado de Fresa
-Agua,frutal,agua,original,soleado,Agua de Tamarindo
-Agua,frutal,agua,original,lluvioso,Agua de Mango
-Agua,frutal,agua,clasico,nublado,Agua de Jamaica
-Helado,cremoso,leche,original,soleado,Helado de Vainilla
-Paleta,frutal,agua,original,soleado,Paleta de Mango
-Paleta,frutal,agua,clasico,lluvioso,Paleta de Limon
-Paleta,frutal,agua,original,soleado,Paleta de Fresa
-Paleta,picante,agua,original,nublado,Paleta de Mango con Chile
-Agua,frutal,agua,clasico,soleado,Agua de Horchata
-Agua,frutal,agua,original,lluvioso,Agua de Piña
-Agua,picante,agua,original,soleado,Agua de Tamarindo con Chile
-Helado,cremoso,leche,original,nublado,Helado de Cafe
-Helado,cremoso,leche,original,soleado,Helado de Menta con Chispas
-Paleta,frutal,agua,original,nublado,Paleta de Zarzamora
-Paleta,frutal,agua,original,soleado,Paleta de Piña
-Paleta,frutal,agua,clasico,soleado,Paleta de Tamarindo
+Paletas,dulce,leche,clasico,nublado,Paleta de Chocolate
+Paletas,acido,agua,original,soleado,Paleta de Maracuya
+Paletas,dulce,agua,clasico,soleado,Paleta de Mango
+Paletas,cremoso,leche,original,lluvioso,Paleta de Queso
+Paletas,acido,agua,clasico,nublado,Paleta de Limon 
+Paletas,dulce,leche,clasico,soleado,Paleta de Fresas c/Crema
+Paletas,cremoso,leche,original,lluvioso,Paleta de Nuez
+Paletas,acido,agua,clasico,soleado,Paleta de Tamarindo
+Helados,cremoso,leche,clasico,nublado,Helado de Chocolate
+Helados,cremoso,leche,original,soleado,Helado de Coco
+Helados,dulce,leche,clasico,lluvioso,Helado de Fresa
+Helados,acido,agua,clasico,soleado,Helado de Limon
+Helados,cremoso,leche,original,nublado,Helado de Oreo 
+Helados,dulce,agua,original,soleado,Helado de Mango
+Helados,dulce,leche,clasico,nublado,Helado de Vainilla
+Helados,cremoso,leche,original,lluvioso,Helado de Beso de angel
+Aguas,dulce,agua,clasico,soleado,Agua CH de Horchata
+Aguas,acido,agua,original,lluvioso,Agua G de Jamaica
+Aguas,cremoso,leche,clasico,nublado,Agua G de Coco c/Nuez
+Aguas,acido,agua,clasico,soleado,Agua CH de Chia con limon
+Aguas,dulce,agua,original,lluvioso,Agua CH de Piña colada
+Aguas,dulce,agua,clasico,soleado,Agua G de Frutas 
+Aguas,acido,agua,original,nublado,Agua CH de Citricos
+Aguas,cremoso,leche,clasico,lluvioso,Agua G de Horchata
+Especialidades,dulce,leche,clasico,soleado,Fresas c/Crema
+Especialidades,cremoso,leche,original,nublado,Frappe de Oreo
+Especialidades,acido,agua,original,soleado,Mangonada
+Especialidades,cremoso,leche,clasico,lluvioso,Malteadas
+Especialidades,dulce,leche,original,soleado,Chocobana
+Especialidades,salado,agua,original,nublado,Paleta preparada
+Especialidades,cremoso,leche,clasico,soleado,Banana Split
+Especialidades,dulce,leche,original,lluvioso,Copa de helado Choco
+Especialidades,cremoso,leche,clasico,nublado,Sandiwch Helado 
+Especialidades,salado,agua,original,soleado,Paleta preparada
+Especialidades,cremoso,leche,original,lluvioso,Frape de fresa
